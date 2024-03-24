@@ -5,15 +5,21 @@ const ejsMate = require('ejs-mate')
 const flash = require('connect-flash');
 const { default: mongoose } = require('mongoose');
 const {campgroundSchema, reviewSchema} = require('./schemas.js')
-const ExpressError = require('./utils/ExpressError')
 const session = require('express-session');
-const Campground = require('./models/campground');
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
+const ExpressError = require('./utils/ExpressError')
 const wrapAsync = require('./utils/wrapAsync');
 const { wrap } = require('module');
 const { error } = require('console');
+const Campground = require('./models/campground');
 const Review  = require('./models/reviews.js')
-const campgrounds = require('./routes/campground.js')
-const reviews = require('./routes/review.js')
+const User = require('./models/user.js')
+
+const userRoutes = require('./routes/user.js')
+const campgroundRoutes = require('./routes/campground.js')
+const reviewsRoutes = require('./routes/review.js')
+
 
 
 
@@ -33,7 +39,8 @@ app.set('views', path.join(__dirname, 'views'))
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
-app.use(express.static(path.join(__dirname, 'public')))
+// app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(__dirname + '/public'));
 
 const sessionConfig = {
     secret: 'thisshouldbeabettersecret!',
@@ -48,14 +55,27 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 app.use(flash());
 
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+
+
+
 app.use((req, res, next) => {
+    // console.log(req.session);
+    res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 })
 
-app.use('/campgrounds', campgrounds)
-app.use('/campgrounds/:id/reviews', reviews)
+
+app.use('/', userRoutes)
+app.use('/campgrounds', campgroundRoutes)
+app.use('/campgrounds/:id/reviews', reviewsRoutes)
 
 app.get('/', (req, res) => {
     res.render('home')
