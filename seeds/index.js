@@ -15,19 +15,19 @@ async function main() {
 
 const sample = array => array[Math.floor(Math.random() * array.length)]
 
-async function seedImg() {
-  try {
-    const resp = await axios.get('https://api.unsplash.com/photos/random', {
-      params: {
-        client_id: 'EPom631hHPGOWlQJjGr9u8ciuvhj_Nno3a7fQVxbkaE',
-        collections: 1286920,
-      },
-    })
-    return resp.data.urls.small
-  } catch (err) {
-    console.error(err)
-  }
-}
+// async function seedImg() {
+//   try {
+//     const resp = await axios.get('https://api.unsplash.com/photos/random', {
+//       params: {
+//         client_id: 'EPom631hHPGOWlQJjGr9u8ciuvhj_Nno3a7fQVxbkaE',
+//         collections: 1286920,
+//       },
+//     })
+//     return resp.data.urls.small
+//   } catch (err) {
+//     console.error(err)
+//   }
+// }
 
 const seedDb = async() => {
     await Campground.deleteMany({});
@@ -38,7 +38,19 @@ const seedDb = async() => {
         author: '65fe890b6dac5ecebf9035d5',
         location: `${cities[random1000].city}, ${cities[random1000].state}`,
         title: `${sample(descriptors)}, ${sample(places)}`,
-        image: await seedImg(),
+        images: [
+              {
+                url: 'https://res.cloudinary.com/dd4lgnkgy/image/upload/v1712043805/Trekker/kxtfozc9trp6psgoz1vx.jpg',
+                filename: 'Trekker/kxtfozc9trp6psgoz1vx',
+              
+              },
+              {
+                url: 'https://res.cloudinary.com/dd4lgnkgy/image/upload/v1712043806/Trekker/uatmjv1dodq7pptea8bb.jpg',
+                filename: 'Trekker/uatmjv1dodq7pptea8bb',
+               
+              }
+            ]
+        ,
         description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Debitis, nihil tempora vel aspernatur quod aliquam illum! Iste impedit odio esse neque veniam molestiae eligendi commodi minus, beatae accusantium, doloribus quo!'
        })
        await camp.save();
