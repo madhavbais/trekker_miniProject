@@ -1,4 +1,5 @@
 <% layout('layouts/boilerplate')  %>
+<link rel="stylesheet" href="/stylesheets/images.css" class="rel"> 
 <div>
     <h1 class="text-center justify-content-center">New Campground</h1>
 </div>
@@ -20,7 +21,14 @@
                     Looks good!
                 </div>
             </div>
-            <input type="file" name="image" id="" multiple>
+            <div class="mb-3">
+                <label class="form-label">Choose Image(s)</label>
+                <div class="form-file custom-file">
+                      <input class="form-control custom-file-input" type="file" id="image" name="image" multiple onchange="previewMultiple(event)">
+                      <label for="image" class="form-label custom-file-label"></label>
+                  </div>
+                  <div id="formFile"></div>
+              </div>
             <!-- <div class="mb-3">
                 <label  class="form-label"  for="image">Image URL</label>
                 <input  class="form-control" type="text" id="image" name="campground[image]" required >

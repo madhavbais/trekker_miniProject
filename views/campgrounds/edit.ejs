@@ -1,8 +1,9 @@
 <% layout('layouts/boilerplate')  %>
+<link rel="stylesheet" href="/stylesheets/images.css" class="rel"> 
 <div class="text-center">
     <h1>Edit Campground</h1>
 </div>
-         <form action="/campgrounds/<%= campground._id %>?_method=PUT"  method="POST" novalidate class="validated-form">
+         <form action="/campgrounds/<%= campground._id %>?_method=PUT"  method="POST" novalidate class="validated-form" enctype="multipart/form-data">
               <div class="mb-3">
                   <label class="form-label" for="title">Title</label>
                   <input class="form-control" type="text" id="title" name="campground[title]" value="<%= campground.title %>" required>
@@ -18,11 +19,12 @@
                 </div>
               </div>
               <div class="mb-3">
-                  <label  class="form-label"  for="image">Image URL</label>
-                  <input  class="form-control" type="text" id="image" name="campground[image]" value="<%= campground.image %>" required>
-                  <div class="valid-feedback">
-                    Looks good!
-                </div>
+                <label class="form-label">Choose Image(s)</label>
+                <div class="form-file custom-file">
+                      <input class="form-control custom-file-input" type="file" id="image" name="image" multiple onchange="previewMultiple(event)">
+                      <label for="image" class="form-label custom-file-label"></label>
+                  </div>
+                  <div id="formFile"></div>
               </div>
               <div class="mb-3">
                   <label  class="form-label"  for="price">Campground Price</label>

@@ -22,7 +22,7 @@ router.get('/new', isLoggedin, campgrounds.renderNewForm)    //should go above /
 
 router.route('/:id')
         .get(wrapAsync(campgrounds.showCampgrounds))
-        .put(validateCampground, isAuthor, isLoggedin, wrapAsync(campgrounds.updateCampground))
+        .put(isLoggedin, isAuthor, upload.array('image'), validateCampground,  wrapAsync(campgrounds.updateCampground))
         .delete(isLoggedin, isAuthor, wrapAsync(campgrounds.deleteCampground))
 
 
