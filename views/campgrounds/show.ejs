@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-6">
-        <div id="map" style="height: 400px; width: 100%;"></div>
+       
 
         <div id="campgroundCarousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
@@ -25,6 +25,7 @@
             </a>
             <% } %>
           </div>
+          
         <div class="card mb-3">
             
             
@@ -51,7 +52,10 @@
         </div>
     </div>
 
+
+
     <div class="col-6">
+        <div id="map"></div>
         <% if(currentUser){ %>
         <h2>Leave a Review</h2>
         <form action="/campgrounds/<%= campground._id %>/reviews" method="POST" class="mb-3 validated-form" novalidate>
@@ -112,4 +116,6 @@ const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
 const campground = <%- JSON.stringify(campground) %>
 </script>
 
-<script src="/javascripts/showPageMap.js"></script>
+<script src="/javascripts/showPageMap.js">
+
+</script>
