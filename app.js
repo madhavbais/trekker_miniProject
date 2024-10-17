@@ -8,16 +8,16 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate')
 const flash = require('connect-flash');
 const { default: mongoose } = require('mongoose');
-const {campgroundSchema, reviewSchema} = require('./schemas.js')
+// const {campgroundSchema, reviewSchema} = require('./schemas.js')
 const session = require('express-session');
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const ExpressError = require('./utils/ExpressError')
-const wrapAsync = require('./utils/wrapAsync');
-const { wrap } = require('module');
-const { error } = require('console');
-const Campground = require('./models/campground');
-const Review  = require('./models/reviews.js')
+// const wrapAsync = require('./utils/wrapAsync');
+// const { wrap } = require('module');
+// const { error } = require('console');
+// const Campground = require('./models/campground');
+// const Review  = require('./models/reviews.js')
 const User = require('./models/user.js')
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet')
@@ -28,7 +28,7 @@ const MongoStore = require("connect-mongo");
 
 
 const dbUrl = process.env.DB_URL
-const secret = process.env.SECRET || "thisshouldbeabettersecret!";
+const secret = process.env.SECRET;
 mongodb://127.0.0.1:27017/yelpCamp
 main().catch(err => console.log(err));
 
@@ -61,7 +61,7 @@ const store = MongoStore.create({
 const sessionConfig = {
     store,
     name: 'session',
-    secret: 'thisshouldbeabettersecret!',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
