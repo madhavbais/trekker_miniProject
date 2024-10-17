@@ -1,9 +1,67 @@
 #cluster-map {
     width: 100%; 
-    height: 400px;
+    height: 450px;
+    border-radius: 2em;
 }
+
 
 #map {
     width: 100%; 
     height: 300px;
+}
+
+body {
+    background-color: #a8dadc; /* Set the base background color */
+  
+    background-repeat: no-repeat; /* Don't repeat the image */
+    background-position: center top; /* Adjust image position */
+    background-size: cover; /* Ensure the image covers the entire body */
+}
+
+
+h1 {
+    color: #143352;
+    padding-bottom: 8%;
+    padding-top: 5%;
+    text-align: center;
+    /* background-image: url(https://images.unsplash.com/photo-1536514498073-50e69d39c6cf?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D); */
+}
+
+/* .col-md-8 {
+    background-color:white;
+} */
+
+.card{
+    background-color: #f1faee;
+    border-radius: 2em;
+}
+
+.btn {
+    background-color: #48cae4;
+}
+
+.col-md-4 {
+    border-radius: 2em;
+}
+
+.navbar {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: rgba(20, 51, 82, 1) !important; /* Semi-transparent black background */
+    border: none; /* Optional: Remove any borders */
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.8); /* Keep the text color white or slightly transparent */
+    border-bottom: 2px solid transparent; /* No underline initially */
+    transition: border-color 0.3s ease; /* Smooth transition for underline */
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: white; /* Make the text fully white on hover */
+    border-bottom-color: white; /* White underline on hover */
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.8); /* Adjust the toggle button for small screens */
 }

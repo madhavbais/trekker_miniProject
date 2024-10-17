@@ -19,18 +19,21 @@ const { error } = require('console');
 const Campground = require('./models/campground');
 const Review  = require('./models/reviews.js')
 const User = require('./models/user.js')
-
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet')
 const userRoutes = require('./routes/user.js')
 const campgroundRoutes = require('./routes/campground.js')
 const reviewsRoutes = require('./routes/review.js')
+const MongoStore = require("connect-mongo");
 
 
-
-
+const dbUrl = process.env.DB_URL
+const secret = process.env.SECRET || "thisshouldbeabettersecret!";
+mongodb://127.0.0.1:27017/yelpCamp
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/yelpCamp');
+  await mongoose.connect(dbUrl);
   console.log('Connection Established!')
  
 }
@@ -45,8 +48,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 // app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(__dirname + '/public'));
+app.use(mongoSanitize());
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60, //need to be seconds
+    crypto: {
+      secret,
+    },
+  });
 
 const sessionConfig = {
+    store,
+    name: 'session',
     secret: 'thisshouldbeabettersecret!',
     resave: false,
     saveUninitialized: true,
@@ -58,6 +72,46 @@ const sessionConfig = {
 }
 app.use(session(sessionConfig))
 app.use(flash());
+app.use(helmet({ contentSecurityPolicy: false }));
+
+const scriptSrcUrls = [
+  "https://stackpath.bootstrapcdn.com/",
+  "https://kit.fontawesome.com/",
+  "https://cdnjs.cloudflare.com/",
+  "https://cdn.jsdelivr.net",
+  "https://cdn.maptiler.com/",
+];
+const styleSrcUrls = [
+  "https://kit-free.fontawesome.com/",
+  "https://stackpath.bootstrapcdn.com/",
+  "https://fonts.googleapis.com/",
+  "https://use.fontawesome.com/",
+  "https://cdn.jsdelivr.net",
+  "https://cdn.maptiler.com/",
+];
+const connectSrcUrls = ["https://api.maptiler.com/"];
+const fontSrcUrls = [];
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: [],
+      connectSrc: ["'self'", ...connectSrcUrls],
+      scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+      styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+      workerSrc: ["'self'", "blob:"],
+      objectSrc: [],
+      imgSrc: [
+        "'self'",
+        "blob:",
+        "data:",
+        "https://res.cloudinary.com/dd4lgnkgy/",
+        "https://images.unsplash.com/",
+        "https://api.maptiler.com/",
+      ],
+      fontSrc: ["'self'", ...fontSrcUrls],
+    },
+  })
+);
 
 
 app.use(passport.initialize());
